@@ -52,24 +52,16 @@ def is_same_author(author: str):
 
 is_same_author(author_name)
 
-author = ""
-try:
-    gh.get_user(author_name, lazy=False)
-    author = author_name
-except UnknownObjectException:
-    print(f"User '{author_name}' doesn't exist as a username in github, getting the first commits author!")
+manifest_file = f"{plugin_name}/plugin.toml"
 
-    manifest_file = f"{plugin_name}/plugin.toml"
-
-    if os.path.exists(manifest_file):
-        file_commits = repo.get_commits(path=manifest_file).reversed
-        author = file_commits[0].author.login
-    else:
-        print(f"Plugin manifest doesn't exist, {manifest_file}")
-        sys.exit(1)
-except BadCredentialsException:
-    print("Invalid Github token")
+if os.path.exists(manifest_file):
+    file_commits = repo.get_commits(path=manifest_file).reversed
+    author = file_commits[0].author.login
+else:
+    print(f"Plugin manifest doesn't exist, {manifest_file}")
     sys.exit(1)
+
+is_same_author(author)
 
 if author:
     pr.create_issue_comment(f"CC {author}")
