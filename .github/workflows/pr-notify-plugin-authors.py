@@ -35,7 +35,7 @@ else:
     print(f"Pull Request '{pull_request_number}' had no id label. Not a plugin PR probably.")
     sys.exit(0)
 
-plugin = id_line.replace(PR_ID_LABEL, "").replace("`", "")
+plugin = id_line.replace(PR_ID_LABEL, "").replace("`", "").strip()
 plugin_split = plugin.split("/")
 
 if len(plugin_split) != 2:
