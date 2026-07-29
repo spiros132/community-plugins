@@ -26,13 +26,14 @@ lines = body.splitlines()
 
 pr_author = pr.user.login
 
-try:
-    id_index = lines.index(PR_ID_LABEL)
-except ValueError:
+for i in range(len(lines)):
+    line = lines[i]
+    if PR_ID_LABEL in line:
+        id_line = line
+        break
+else:
     print(f"Pull Request '{pull_request_number}' had no id label. Not a plugin PR probably.")
     sys.exit(0)
-
-id_line = lines[id_index]
 
 plugin = id_line.replace(PR_ID_LABEL, "").replace("`", "")
 plugin_split = plugin.split("/")
